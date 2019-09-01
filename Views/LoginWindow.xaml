@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFMVVM.IHM.Views"
+        xmlns:views="clr-namespace:WPFMVVM.IHM.Views"
+        xmlns:viewModels="clr-namespace:WPFMVVM.IHM.ViewModels"
         mc:Ignorable="d"
-        
+        MinHeight="400" MinWidth="600"
         Title="LoginWindow" Height="450" Width="800">
     <Grid>
         <Grid.Resources>
@@ -24,7 +25,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -33,10 +33,6 @@
                     Command="{Binding LogoutCommand, Mode=OneTime}" Padding="3"
                     Visibility="{Binding IsAuthenticated, Converter={StaticResource booleanToVisibilityConverter}}"
                     Margin="8" FontWeight="SemiBold"/>
-
-        <!--<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="Page de connexion"  
-                   FontSize="25" HorizontalAlignment="Center" TextWrapping="Wrap" 
-                   FontWeight="Bold" Margin="0,5,0,8"/>-->
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
               Visibility="{Binding IsNotAuthenticated, Converter={StaticResource booleanToVisibilityConverter}}">
@@ -80,7 +76,7 @@
                     HorizontalAlignment="Center" Margin="2,0,0,0" FontWeight="SemiBold"/>
             </StackPanel>
 
-            <TextBlock Text="{Binding Status}" Grid.Row="6" Grid.Column="1" 
+            <TextBlock Text="{Binding Status}" Grid.Row="5" Grid.Column="1" 
                    Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Foreground="Red" TextWrapping="Wrap"/>
         </Grid>
@@ -94,11 +90,14 @@
                     HorizontalAlignment="Center" Margin="5" Height="35" Padding="3"/>
         </StackPanel>-->
 
-        <local:AdminView Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Margin="8"
-               Visibility="{Binding IsAdminAuthenticated, Converter={StaticResource booleanToVisibilityConverter}}"/>
-
-        <local:UserView Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Margin="8"
+        <views:AdminView Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="8"
+               Visibility="{Binding IsAdminViewVisible, Converter={StaticResource booleanToVisibilityConverter}}"/>
+        
+        <views:UserView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="8"
                Visibility="{Binding IsUserAuthenticated, Converter={StaticResource booleanToVisibilityConverter}}"/>
 
     </Grid>
+    <!--<DataTemplate DataType="{x:Type viewModels:AdminViewModel}">
+        <views:AdminView/>
+    </DataTemplate>-->
 </Window>

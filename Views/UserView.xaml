@@ -5,7 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFMVVM.IHM.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="250" d:DesignWidth="400">
     
-    <TextBlock Text="This window is only accessible for users..."/>
+    <TextBlock FontSize="25" Foreground="Blue" HorizontalAlignment="Center"
+               VerticalAlignment="Center" Text="User View"/>
+
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Foreground="#FF2D2D2D"
+            Margin="5"
+            Style="{StaticResource TextBlockStyle}"
+            HorizontalAlignment="Center"
+            Text="{Binding State}"
+            TextWrapping="Wrap" />
+        <ProgressBar
+            Grid.Row="1"
+            IsIndeterminate="{Binding IsIndeterminate}"
+            Margin="5"
+            Maximum="{Binding MaxProgress}"
+            Height="12"
+            Value="{Binding Progress}" />
+    </Grid>
 </Grid>

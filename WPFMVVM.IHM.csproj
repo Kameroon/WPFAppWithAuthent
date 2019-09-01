@@ -84,9 +84,11 @@
     <Compile Include="Services\Contracts\IAuthenticationService.cs" />
     <Compile Include="Services\Contracts\IInternalUserData.cs" />
     <Compile Include="Services\InternalUserData.cs" />
+    <Compile Include="ViewModels\AdminViewModel.cs" />
     <Compile Include="ViewModels\Contracts\IView.cs" />
     <Compile Include="ViewModels\Contracts\IViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>

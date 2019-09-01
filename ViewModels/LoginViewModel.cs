@@ -17,6 +17,19 @@ namespace WPFMVVM.IHM.ViewModels
 {
     public class LoginViewModel : ViewModelBase, IViewModel
     {
+        #region -- Event send data --
+        //public static event OnNewData NotifyDataReady;
+        //delegate void OnNewData(IUser Data);
+
+        ////all the other classes register
+        //MainClass.OnNewData += Listner;
+
+        //public void Listener(IUser Data)
+        //{
+        //    var MyLocalCopy = Data;
+        //} 
+        #endregion
+
         #region --   --
         private readonly IAuthenticationService _authenticationService;
         private string _username;
@@ -59,18 +72,18 @@ namespace WPFMVVM.IHM.ViewModels
             set { _status = value; NotifyPropertyChanged("Status"); }
         }
 
-        private bool _isAdminAuthenticated;
+        private bool _isAdminViewVisible;
 
-        public bool IsAdminAuthenticated
+        public bool IsAdminViewVisible
         {
-            get { return _isAdminAuthenticated; }
+            get { return _isAdminViewVisible; }
             set
             {
-                _isAdminAuthenticated = value;
-                NotifyPropertyChanged("IsAdminAuthenticated");
+                _isAdminViewVisible = value;
+                NotifyPropertyChanged("IsAdminViewVisible");
             }
         }
-
+                
         private bool _isUserAuthenticated;
 
         public bool IsUserAuthenticated
@@ -95,22 +108,23 @@ namespace WPFMVVM.IHM.ViewModels
             }
         }
         #endregion   
-
-
+        
         public DelegateCommand ShowViewCommand { get; set; }
         public DelegateCommand LoginCommand { get; set; }
         public DelegateCommand LogoutCommand { get; set; }
 
-
+        private AdminViewModel _adminViewModel { get; set; }
         #region --   --
         public LoginViewModel(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
 
-            IsAdminAuthenticated = false;
+            _adminViewModel = new AdminViewModel();
+
+            IsAdminViewVisible = false;
             IsUserAuthenticated = false;
             IsNotAuthenticated = true;
-
+            
             // --  Show send mail form command  --            
             //ShowViewCommand = new DelegateCommand(x => ShowView());
             LoginCommand = new DelegateCommand(Login, CanLogin);
@@ -139,15 +153,22 @@ namespace WPFMVVM.IHM.ViewModels
                 _role = user.Roles.FirstOrDefault();
                 if (_role == null)
                 {
-                    IsAdminAuthenticated = false;
+                    IsAdminViewVisible = false;
                     IsUserAuthenticated = true;
                     IsNotAuthenticated = false;
+
+
                 }
                 else
                 {
                     IsUserAuthenticated = false;
-                    IsAdminAuthenticated = true;
+                    IsAdminViewVisible = true;
                     IsNotAuthenticated = false;
+
+                    AdminView adminView = new AdminView();
+                    adminView.DataContext = _adminViewModel;
+
+                    _adminViewModel.Info = _role;
                 }
                 #endregion
 
@@ -175,8 +196,7 @@ namespace WPFMVVM.IHM.ViewModels
 
         private bool CanLogin(object parameter)
         {
-            return string.IsNullOrEmpty(Username);
-            //return !IsAuthenticated;  
+            return !IsAuthenticated;  
         }
 
         private void Logout(object parameter)
@@ -190,7 +210,7 @@ namespace WPFMVVM.IHM.ViewModels
                 //_loginCommand.RaiseCanExecuteChanged();
                 //_logoutCommand.RaiseCanExecuteChanged();
 
-                IsAdminAuthenticated = false;
+                //IsAdminAuthenticated = false;
                 IsUserAuthenticated = false;
                 IsNotAuthenticated = true;
 

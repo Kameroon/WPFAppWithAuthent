@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFMVVM.IHM.ViewModels;
 
 namespace WPFMVVM.IHM.Views
 {
@@ -23,6 +24,8 @@ namespace WPFMVVM.IHM.Views
         public AdminView()
         {
             InitializeComponent();
+
+            //DataContext = new AdminViewModel();
         }
     }
 }
