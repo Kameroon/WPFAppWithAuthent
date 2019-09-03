@@ -138,7 +138,7 @@ namespace WPFMVVM.IHM.ViewModels
         private void Login(object parameter)
         {
             PasswordBox passwordBox = parameter as PasswordBox;
-            string clearTextPassword = passwordBox.Password;
+            string clearTextPassword = passwordBox?.Password;
             try
             {
                 //Validate credentials through the authentication service

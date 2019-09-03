@@ -78,6 +78,7 @@
     <Compile Include="Authent\CustomPrincipal.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Helppers\Converters\TextInputToVisibilityConverter.cs" />
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
@@ -165,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Communs\" />
-    <Folder Include="Helppers\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\Metro\HowToApplyTheme.txt" />

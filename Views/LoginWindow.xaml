@@ -5,12 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:WPFMVVM.IHM.Views"
         xmlns:viewModels="clr-namespace:WPFMVVM.IHM.ViewModels"
+        xmlns:converter="clr-namespace:WPFMVVM.IHM.Helppers.Converters"
         mc:Ignorable="d"
         MinHeight="400" MinWidth="600"
         Title="LoginWindow" Height="450" Width="800">
-    <Grid>
+    <Grid>        
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+            <converter:TextInputToVisibilityConverter x:Key="TextInputToVisibilityConverter" />
+
+            <SolidColorBrush x:Key="brushWatermarkBackground" Color="White" />
+            <SolidColorBrush x:Key="brushWatermarkForeground" Color="LightSteelBlue" />
+            <SolidColorBrush x:Key="brushWatermarkBorder" Color="Indigo" />
+
+            <Style x:Key="EntryFieldStyle" TargetType="Grid" >
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="20,0" />
+            </Style>
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
@@ -27,7 +39,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
 
         <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Log out" HorizontalAlignment="Right" 
                     Command="{Binding LogoutCommand, Mode=OneTime}" Padding="3"
@@ -63,9 +74,57 @@
                    HorizontalAlignment="Right"/>
             <TextBlock Text="Password :" Grid.Row="3" Grid.Column="1" Margin="0 9 0 0"
                    HorizontalAlignment="Right"/>
-            <TextBox Text="{Binding Username}" Grid.Row="2" Grid.Column="2" Margin="5"/>
-            <PasswordBox x:Name="passwordBox" Grid.Row="3" Grid.Column="2" Margin="5"/>
-            
+            <!--<TextBox Text="{Binding Username}" Grid.Row="2" Grid.Column="2" Margin="5"/>
+            <PasswordBox x:Name="passwordBox" Grid.Row="3" Grid.Column="2" Margin="5"/>-->
+
+            <!-- Le placeholder disparait dès que le cursseur est sur le textBox -->
+            <Grid Grid.Row="2" Grid.Column="2" Margin="5" Background="{StaticResource brushWatermarkBackground}" 
+                  Style="{StaticResource EntryFieldStyle}">
+                <TextBlock Margin="5,2" Text="Entrer le username..." Foreground="{StaticResource brushWatermarkForeground}" FontSize="13" VerticalAlignment="Center"
+                       Visibility="{Binding ElementName=textUserName, Path=Text.IsEmpty, Converter={StaticResource booleanToVisibilityConverter}}" />
+                <TextBox Name="textUserName" Background="Transparent" BorderBrush="{StaticResource brushWatermarkBorder}" 
+                         Text="{Binding Username}" />
+            </Grid>
+
+            <!-- Le placeholder disparait dès que le cursseur est sur le textBox -->
+            <!--<Grid Grid.Row="3" Grid.Column="2" Margin="5" Background="White" 
+                  Style="{StaticResource EntryFieldStyle}">
+                <TextBlock Margin="5,2" Text="Entrer le mot de passe..." Foreground="Gray" FontSize="13" VerticalAlignment="Center"
+                       Visibility="{Binding ElementName=passwordBox, Path=Text.IsEmpty, Converter={StaticResource booleanToVisibilityConverter}}" />
+                <PasswordBox x:Name="passwordBox" Background="Transparent" BorderBrush="Indigo"/>
+            </Grid>-->
+
+            <!-- Le placeholder ne disparait que la saisi du 1er caractère dans le champs  !!!!! -->
+            <Grid Grid.Row="3" Grid.Column="2" Margin="5" Background="{StaticResource brushWatermarkBackground}" 
+                  Style="{StaticResource EntryFieldStyle}" >
+                <TextBlock Margin="5,2" Text="Entrer le mot de passe..." VerticalAlignment="Center" 
+                           Foreground="{StaticResource brushWatermarkForeground}"  FontSize="13">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource TextInputToVisibilityConverter}">
+                            <Binding ElementName="passwordBox" Path="Text.IsEmpty" />
+                            <Binding ElementName="passwordBox" Path="IsFocused" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+                <PasswordBox x:Name="passwordBox" Background="Transparent" BorderBrush="{StaticResource brushWatermarkBorder}"/>
+            </Grid>
+
+            <!-- Le placeholder ne disparait que la saisi du 1er caractère dans le champs !!!!!!!!! -->
+            <!--<Grid Grid.Row="3" Grid.Column="2" Margin="5" Background="{StaticResource brushWatermarkBackground}" 
+                  Style="{StaticResource EntryFieldStyle}" >
+                <TextBlock Margin="5,2" Text="This dissappears as the control gets focus..."
+                       Foreground="{StaticResource brushWatermarkForeground}" VerticalAlignment="Center" >
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource TextInputToVisibilityConverter}">
+                            <Binding ElementName="txtUserEntry2" Path="Text.IsEmpty" />
+                            <Binding ElementName="txtUserEntry2" Path="IsFocused" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+                <TextBox Name="txtUserEntry2" Background="Transparent"
+                     BorderBrush="{StaticResource brushWatermarkBorder}" />
+            </Grid>-->
+
             <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
                     HorizontalAlignment="Right" Margin="5">
                 <Button Content="Log in" Command="{Binding LoginCommand, Mode=OneTime}"
